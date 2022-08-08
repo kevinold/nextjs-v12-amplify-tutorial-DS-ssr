@@ -1,19 +1,18 @@
 // pages/index.js
 import { Authenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
-import { Amplify, Analytics, API, Auth, withSSRContext } from "aws-amplify";
+import { Amplify, Analytics, Auth, DataStore, withSSRContext } from "aws-amplify";
 import Head from "next/head";
 import React from "react";
 import awsExports from "../src/aws-exports";
-import { createPost } from "../src/graphql/mutations";
-import { listPosts } from "../src/graphql/queries";
+import { Post } from "../src/models";
 import styles from "../styles/Home.module.css";
 
 Amplify.configure({ ...awsExports, ssr: true });
 
 export async function getServerSideProps({ req }) {
   const SSR = withSSRContext({ req });
-  const response = await SSR.API.graphql({ query: listPosts });
+  const posts = await SSR.DataStore.query(Post);
 
   let user = null;
 
@@ -24,7 +23,7 @@ export async function getServerSideProps({ req }) {
 
   return {
     props: {
-      posts: response.data.listPosts.items,
+      posts,
       user: user.attributes,
     },
   };
@@ -36,20 +35,16 @@ async function handleCreatePost(event) {
   const form = new FormData(event.target);
 
   try {
-    const { data } = await API.graphql({
-      authMode: "AMAZON_COGNITO_USER_POOLS",
-      query: createPost,
-      variables: {
-        input: {
-          title: form.get("title"),
-          content: form.get("content"),
-        },
-      },
-    });
+    const post = await DataStore.save(
+      new Post({
+        title: form.get("title"),
+        content: form.get("content"),
+      })
+    );
 
     await Analytics.record({ name: "createPost" });
 
-    window.location.href = `/posts/${data.createPost.id}`;
+    window.location.href = `/posts/${post.id}`;
   } catch ({ errors }) {
     console.error(...errors);
     throw new Error(errors[0].message);

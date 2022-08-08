@@ -1,0 +1,21 @@
+{
+    "appName": "nextjsv12DStutorial",
+    "roleName": "pinpointLambdaRole48c84f56",
+    "cloudformationPolicyName": "cloudformationPolicy48c84f56",
+    "cloudWatchPolicyName": "cloudWatchPolicy48c84f56",
+    "pinpointPolicyName": "pinpointPolicy48c84f56",
+    "authPolicyName": "pinpoint_amplify_48c84f56",
+    "unauthPolicyName": "pinpoint_amplify_48c84f56",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    }
+}

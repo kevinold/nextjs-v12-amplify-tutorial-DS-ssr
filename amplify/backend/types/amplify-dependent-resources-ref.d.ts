@@ -15,6 +15,26 @@ export type AmplifyDependentResourcesAttributes = {
             "GraphQLAPIKeyOutput": "string",
             "GraphQLAPIIdOutput": "string",
             "GraphQLAPIEndpointOutput": "string"
+        },
+        "helloApi": {
+            "RootUrl": "string",
+            "ApiName": "string",
+            "ApiId": "string"
+        }
+    },
+    "analytics": {
+        "nextjsv12DStutorial": {
+            "Region": "string",
+            "Id": "string",
+            "appName": "string"
+        }
+    },
+    "function": {
+        "HelloApi": {
+            "Name": "string",
+            "Arn": "string",
+            "Region": "string",
+            "LambdaExecutionRole": "string"
         }
     }
 }

@@ -3,3 +3,4 @@ type Post @model @auth(rules: [{ allow: owner }, { allow: public, operations: [r
   title: String!
   content: String!
 }
+ 
