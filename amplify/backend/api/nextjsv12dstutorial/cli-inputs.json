@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "apiName": "nextjsv12dstutorial",
+    "serviceName": "AppSync",
+    "gqlSchemaPath": "/Users/moldkevi/work/next-js-testing-verification-projects/nextjs-v12-amplify-tutorial-DS-ssr/amplify/backend/api/nextjsv12dstutorial/schema.graphql",
+    "defaultAuthType": {
+      "mode": "API_KEY",
+      "expirationTime": 365,
+      "apiKeyExpirationDate": "2023-08-08T15:21:59.176Z",
+      "keyDescription": "default"
+    },
+    "additionalAuthTypes": [
+      {
+        "mode": "AMAZON_COGNITO_USER_POOLS",
+        "cognitoUserPoolId": "authnextjsv12dstutorialbece8d1a"
+      }
+    ],
+    "conflictResolution": {
+      "defaultResolutionStrategy": {
+        "type": "AUTOMERGE"
+      }
+    }
+  }
+}

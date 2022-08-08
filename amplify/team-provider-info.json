@@ -10,6 +10,11 @@
       "StackName": "amplify-nextjsv12dstutorial-dev-101933",
       "StackId": "arn:aws:cloudformation:us-west-2:074128318641:stack/amplify-nextjsv12dstutorial-dev-101933/833b9280-172d-11ed-b350-0235d00e2fcb",
       "AmplifyAppId": "d5saxvcfqlc8g"
+    },
+    "categories": {
+      "auth": {
+        "nextjsv12dstutorialbece8d1a": {}
+      }
     }
   }
 }

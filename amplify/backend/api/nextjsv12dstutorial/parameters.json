@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "nextjsv12dstutorial",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authnextjsv12dstutorialbece8d1a",
+      "Outputs.UserPoolId"
+    ]
+  }
+}
