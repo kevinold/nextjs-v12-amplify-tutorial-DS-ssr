@@ -11,7 +11,7 @@ import {
   withSSRContext,
 } from "aws-amplify";
 import Head from "next/head";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import awsExports from "../src/aws-exports";
 import { Post } from "../src/models";
 import styles from "../styles/Home.module.css";
@@ -36,7 +36,7 @@ export async function getServerSideProps({ req }) {
 
   return {
     props: {
-      posts: serializeModel(posts),
+      serverPosts: serializeModel(posts),
       user: user && user.attributes,
     },
   };
@@ -64,7 +64,18 @@ async function handleCreatePost(event) {
   }
 }
 
-export default function Home({ posts = [], user }) {
+export default function Home({ serverPosts = [], user }) {
+  const [posts, setPosts] = useState(serverPosts);
+
+  useEffect(() => {
+    const sub = DataStore.observeQuery(Post).subscribe((snapshot) => {
+      setPosts(snapshot.items);
+    });
+
+    return () => {
+      sub.unsubscribe();
+    };
+  }, []);
   return (
     <div className={styles.container}>
       <Head>
