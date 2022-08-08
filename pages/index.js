@@ -1,14 +1,28 @@
 // pages/index.js
+import { serializeModel } from "@aws-amplify/datastore/ssr";
 import { Authenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
-import { Amplify, Analytics, Auth, DataStore, withSSRContext } from "aws-amplify";
+import {
+  Amplify,
+  Analytics,
+  Auth,
+  AuthModeStrategyType,
+  DataStore,
+  withSSRContext,
+} from "aws-amplify";
 import Head from "next/head";
 import React from "react";
 import awsExports from "../src/aws-exports";
 import { Post } from "../src/models";
 import styles from "../styles/Home.module.css";
 
-Amplify.configure({ ...awsExports, ssr: true });
+Amplify.configure({
+  ...awsExports,
+  DataStore: {
+    authModeStrategyType: AuthModeStrategyType.MULTI_AUTH,
+  },
+  ssr: true,
+});
 
 export async function getServerSideProps({ req }) {
   const SSR = withSSRContext({ req });
@@ -18,13 +32,12 @@ export async function getServerSideProps({ req }) {
 
   try {
     user = await SSR.Auth.currentAuthenticatedUser();
-    console.log(user);
   } catch (e) {}
 
   return {
     props: {
-      posts,
-      user: user.attributes,
+      posts: serializeModel(posts),
+      user: user && user.attributes,
     },
   };
 }
@@ -44,7 +57,7 @@ async function handleCreatePost(event) {
 
     await Analytics.record({ name: "createPost" });
 
-    window.location.href = `/posts/${post.id}`;
+    //window.location.href = `/posts/${post.id}`;
   } catch ({ errors }) {
     console.error(...errors);
     throw new Error(errors[0].message);
