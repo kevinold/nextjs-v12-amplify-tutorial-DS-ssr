@@ -1,18 +1,24 @@
-import { Amplify, Analytics, API, withSSRContext } from "aws-amplify";
+import { serializeModel } from "@aws-amplify/datastore/ssr";
+import { Amplify, Analytics, AuthModeStrategyType, DataStore, withSSRContext } from "aws-amplify";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import awsExports from "../../src/aws-exports";
-import { deletePost } from "../../src/graphql/mutations";
-import { getPost, listPosts } from "../../src/graphql/queries";
+import { Post } from "../../src/models";
 import styles from "../../styles/Home.module.css";
 
-Amplify.configure({ ...awsExports, ssr: true });
+Amplify.configure({
+  ...awsExports,
+  DataStore: {
+    authModeStrategyType: AuthModeStrategyType.MULTI_AUTH,
+  },
+  ssr: true,
+});
 
 export async function getStaticPaths() {
   const SSR = withSSRContext();
-  const { data } = await SSR.API.graphql({ query: listPosts });
-  const paths = data.listPosts.items.map((post) => ({
+  const posts = await SSR.DataStore.query(Post);
+  const paths = posts.map((post) => ({
     params: { id: post.id },
   }));
 
@@ -24,21 +30,16 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   const SSR = withSSRContext();
-  const { data } = await SSR.API.graphql({
-    query: getPost,
-    variables: {
-      id: params.id,
-    },
-  });
+  const post = await SSR.DataStore.query(Post, params.id);
 
   return {
     props: {
-      post: data.getPost,
+      post: serializeModel(post),
     },
   };
 }
 
-export default function Post({ post }) {
+export default function Posts({ post }) {
   const router = useRouter();
 
   useEffect(() => {
@@ -59,13 +60,10 @@ export default function Post({ post }) {
 
   async function handleDelete() {
     try {
-      await API.graphql({
-        authMode: "AMAZON_COGNITO_USER_POOLS",
-        query: deletePost,
-        variables: {
-          input: { id: post.id },
-        },
-      });
+      const postToDelete = await DataStore.query(Post, post.id);
+      if (postToDelete) {
+        DataStore.delete(postToDelete);
+      }
 
       window.location.href = "/";
     } catch ({ errors }) {
