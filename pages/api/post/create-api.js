@@ -1,12 +1,9 @@
-import { Amplify, AuthModeStrategyType, withSSRContext } from "aws-amplify";
+import { Amplify, withSSRContext } from "aws-amplify";
 import awsExports from "../../../src/aws-exports";
 import { createPost } from "../../../src/graphql/mutations";
 
 Amplify.configure({
   ...awsExports,
-  DataStore: {
-    authModeStrategyType: AuthModeStrategyType.MULTI_AUTH,
-  },
   ssr: true,
 });
 
