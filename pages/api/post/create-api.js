@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     query: createPost,
     variables: {
       input: {
-        title: `API ${new Date().toLocaleTimeString()}`,
+        title: `API GraphQL ${new Date().toLocaleTimeString()}`,
         content: "Test content",
       },
     },

@@ -14,7 +14,7 @@ export default async function handler(req, res) {
   const { DataStore } = withSSRContext({ req });
   const post = await DataStore.save(
     new Post({
-      title: `API ${new Date().toLocaleTimeString()}`,
+      title: `DS API ${new Date().toLocaleTimeString()}`,
       content: "Test content",
     })
   );
