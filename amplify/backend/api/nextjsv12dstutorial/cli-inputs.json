@@ -3,7 +3,7 @@
   "serviceConfiguration": {
     "apiName": "nextjsv12dstutorial",
     "serviceName": "AppSync",
-    "gqlSchemaPath": "/Users/moldkevi/work/next-js-testing-verification-projects/nextjs-v12-amplify-tutorial-DS-ssr/amplify/backend/api/nextjsv12dstutorial/schema.graphql",
+    "gqlSchemaPath": "/Users/kevold/work/next-js-testing-verification-projects/nextjs-v12-amplify-tutorial-DS-ssr/amplify/backend/api/nextjsv12dstutorial/schema.graphql",
     "defaultAuthType": {
       "mode": "API_KEY",
       "expirationTime": 365,
