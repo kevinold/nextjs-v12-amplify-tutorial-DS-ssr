@@ -11,7 +11,7 @@ Amplify.configure({
 });
 
 export default async function handler(req, res) {
-  const { DataStore } = withSSRContext(req);
+  const { DataStore } = withSSRContext({ req });
   const post = await DataStore.save(
     new Post({
       title: `API ${new Date().toLocaleTimeString()}`,

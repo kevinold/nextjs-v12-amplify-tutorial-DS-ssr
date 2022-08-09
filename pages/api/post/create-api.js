@@ -10,7 +10,7 @@ Amplify.configure({
 Amplify.Logger.LOG_LEVEL = "DEBUG";
 
 export default async function handler(req, res) {
-  const SSR = withSSRContext(req);
+  const SSR = withSSRContext({ req });
   const { data } = await SSR.API.graphql({
     authMode: "AMAZON_COGNITO_USER_POOLS",
     query: createPost,
