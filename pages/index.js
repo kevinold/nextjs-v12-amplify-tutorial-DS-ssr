@@ -1,6 +1,6 @@
 // pages/index.js
 import { serializeModel } from "@aws-amplify/datastore/ssr";
-import { Authenticator } from "@aws-amplify/ui-react";
+import { Authenticator, Flex, Heading } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import {
   Amplify,
@@ -77,15 +77,15 @@ export default function Home({ serverPosts = [], user }) {
     };
   }, []);
   return (
-    <div className={styles.container}>
+    <Flex direction="column">
       <Head>
         <title>Amplify + Next.js</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Amplify + Next.js</h1>
-
+        <Heading level={3}>Amplify + Next.js</Heading>
+        <pre data-test="user-details">User: {JSON.stringify(user, null, 2)}</pre>
         <p className={styles.description}>
           <code data-test="posts-count" className={styles.code}>
             {posts.length}
@@ -93,7 +93,8 @@ export default function Home({ serverPosts = [], user }) {
           posts
         </p>
 
-        <div className={styles.grid}>
+        <Flex>
+          <Heading level={3}>Posts</Heading>
           {posts.map((post) => (
             <a
               data-test={`post-${post.id}`}
@@ -105,34 +106,31 @@ export default function Home({ serverPosts = [], user }) {
               <p>{post.content}</p>
             </a>
           ))}
+        </Flex>
 
-          <div className={styles.card}>
-            <h3 className={styles.title}>New Post</h3>
+        <Flex>
+          <Heading level={3}>New Post</Heading>
 
-            <Authenticator>
-              <form onSubmit={handleCreatePost}>
-                <fieldset>
-                  <legend>Title</legend>
-                  <input defaultValue={`Today, ${new Date().toLocaleTimeString()}`} name="title" />
-                </fieldset>
+          <Authenticator>
+            <form onSubmit={handleCreatePost}>
+              <fieldset>
+                <legend>Title</legend>
+                <input defaultValue={`Today, ${new Date().toLocaleTimeString()}`} name="title" />
+              </fieldset>
 
-                <fieldset>
-                  <legend>Content</legend>
-                  <textarea defaultValue="I built an Amplify app with Next.js!" name="content" />
-                </fieldset>
+              <fieldset>
+                <legend>Content</legend>
+                <textarea defaultValue="I built an Amplify app with Next.js!" name="content" />
+              </fieldset>
 
-                <button>Create Post</button>
-                <button type="button" onClick={() => Auth.signOut()}>
-                  Sign out
-                </button>
-              </form>
-              <code>
-                <pre>{JSON.stringify(user, null, 2)}</pre>
-              </code>
-            </Authenticator>
-          </div>
-        </div>
+              <button>Create Post</button>
+              <button type="button" onClick={() => Auth.signOut()}>
+                Sign out
+              </button>
+            </form>
+          </Authenticator>
+        </Flex>
       </main>
-    </div>
+    </Flex>
   );
 }
