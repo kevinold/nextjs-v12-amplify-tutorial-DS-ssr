@@ -10,12 +10,16 @@ export default async function handler(req, res) {
 
   let user = null;
   let session = null;
+  let userInfo = null;
+  let userAttrs = null;
 
   try {
     user = await SSR.Auth.currentAuthenticatedUser();
     console.log(user);
     session = await SSR.Auth.currentSession().idToken;
+    userInfo = await SSR.Auth.currentUserInfo();
+    userAttrs = await SSR.Auth.userAttributes(user);
   } catch (e) {}
 
-  res.status(200).json({ user: user.attributes, session });
+  res.status(200).json({ user: user.attributes, session, userInfo, userAttrs });
 }
