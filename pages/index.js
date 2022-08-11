@@ -2,14 +2,7 @@
 import { serializeModel } from "@aws-amplify/datastore/ssr";
 import { Authenticator, Flex, Heading } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
-import {
-  Amplify,
-  Analytics,
-  Auth,
-  AuthModeStrategyType,
-  DataStore,
-  withSSRContext,
-} from "aws-amplify";
+import { Amplify, Analytics, AuthModeStrategyType, DataStore, withSSRContext } from "aws-amplify";
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import awsExports from "../src/aws-exports";
@@ -112,22 +105,24 @@ export default function Home({ serverPosts = [], user }) {
           <Heading level={3}>New Post</Heading>
 
           <Authenticator>
-            <form onSubmit={handleCreatePost}>
-              <fieldset>
-                <legend>Title</legend>
-                <input defaultValue={`Today, ${new Date().toLocaleTimeString()}`} name="title" />
-              </fieldset>
+            {({ signOut }) => (
+              <form onSubmit={handleCreatePost}>
+                <fieldset>
+                  <legend>Title</legend>
+                  <input defaultValue={`Today, ${new Date().toLocaleTimeString()}`} name="title" />
+                </fieldset>
 
-              <fieldset>
-                <legend>Content</legend>
-                <textarea defaultValue="I built an Amplify app with Next.js!" name="content" />
-              </fieldset>
+                <fieldset>
+                  <legend>Content</legend>
+                  <textarea defaultValue="I built an Amplify app with Next.js!" name="content" />
+                </fieldset>
 
-              <button>Create Post</button>
-              <button type="button" onClick={() => Auth.signOut()}>
-                Sign out
-              </button>
-            </form>
+                <button>Create Post</button>
+                <button type="button" onClick={signOut}>
+                  Sign out
+                </button>
+              </form>
+            )}
           </Authenticator>
         </Flex>
       </main>
