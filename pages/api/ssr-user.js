@@ -19,6 +19,7 @@ export default async function handler(req, res) {
     session = await SSR.Auth.currentSession().idToken;
     userInfo = await SSR.Auth.currentUserInfo();
     userAttrs = await SSR.Auth.userAttributes(user);
+    await SSR.Auth.signOut({ global: true });
   } catch (e) {}
 
   res.status(200).json({ user: user.attributes, session, userInfo, userAttrs });
